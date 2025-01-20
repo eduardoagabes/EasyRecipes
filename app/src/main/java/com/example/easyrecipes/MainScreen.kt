@@ -59,7 +59,7 @@ fun MainScreen(navController: NavHostController) {
     MainContent(
         recipes = recipes,
     ) { itemClicked ->
-        navController.navigate(route = "recipeDetail")
+        navController.navigate(route = "recipeDetail/${itemClicked.id}")
     }
 }
 
