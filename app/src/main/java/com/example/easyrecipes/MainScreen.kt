@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -26,6 +27,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
+import com.example.easyrecipes.designsystem.components.ERHtmlText
+import com.example.easyrecipes.designsystem.components.ERSearchBar
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -56,10 +59,24 @@ fun MainScreen(navController: NavHostController) {
 
     })
 
-    MainContent(
-        recipes = recipes,
-    ) { itemClicked ->
-        navController.navigate(route = "recipeDetail/${itemClicked.id}")
+    Surface(
+        modifier = Modifier.fillMaxWidth()
+    ) {
+
+        MainContent(
+            recipes = recipes,
+            onSearchClicked = { query ->
+
+                val tempCleanQuery = query.trim()
+                if (tempCleanQuery.isNotEmpty()) {
+                    navController.navigate(route = "search_recipes/$tempCleanQuery")
+                }
+            },
+            onClick =
+                { itemClicked ->
+                    navController.navigate(route = "recipe_detail/${itemClicked.id}")
+                }
+        )
     }
 }
 
@@ -67,11 +84,54 @@ fun MainScreen(navController: NavHostController) {
 private fun MainContent(
     recipes: List<RecipeDto>,
     onClick: (RecipeDto) -> Unit,
+    onSearchClicked: (String) -> Unit,
 ) {
-    RecipesSession(
-        label = "Recipes",
-        recipes = recipes,
-        onClick = onClick
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+    ) {
+
+        // Remove the commented code to enable search recipes feature
+        var query by remember { mutableStateOf("") }
+        SearchSession(
+            label = "Encuentra las mejores recetas \npara cocinar",
+            query = query,
+            onValueChange = { newValue ->
+                query = newValue
+            },
+            onSearchClicked = onSearchClicked
+        )
+
+        RecipesSession(
+            label = "Recipes",
+            recipes = recipes,
+            onClick = onClick
+        )
+
+    }
+}
+
+@Composable
+fun SearchSession(
+    label: String,
+    query: String,
+    onValueChange: (String) -> Unit,
+    onSearchClicked: (String) -> Unit
+) {
+    Text(
+        modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 16.dp),
+        fontSize = 18.sp,
+        fontWeight = FontWeight.Bold,
+        text = label
+    )
+
+    ERSearchBar(
+        query = query,
+        placeHolder = "Search recipes",
+        onValueChange = onValueChange,
+        onSearchClicked = {
+            onSearchClicked.invoke(query)
+        }
     )
 }
 
@@ -146,6 +206,8 @@ private fun RecipeItem(
             fontWeight = FontWeight.SemiBold,
             text = recipe.title
         )
+
+        ERHtmlText(text = recipe.summary, maxLine = 3)
 
     }
 }

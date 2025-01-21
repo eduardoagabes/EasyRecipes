@@ -19,12 +19,21 @@ fun EasyRecipesApp() {
         }
         composable(
             route = "recipeDetail" + "/{itemId}",
-            arguments = listOf(navArgument("itemId"){
+            arguments = listOf(navArgument("itemId") {
                 type = NavType.StringType
             })
         ) { backStrackEntry ->
             val recipeId = requireNotNull(backStrackEntry.arguments?.getString("itemId"))
             RecipeDetailScreen(recipeId, navController)
+        }
+        composable(
+            route = "search_recipes" + "/{query}",
+            arguments = listOf(navArgument("query") {
+                type = NavType.StringType
+            })
+        ) { backStackEntry ->
+            val id = requireNotNull(backStackEntry.arguments?.getString("query"))
+            SearchRecipesScreen(id, navController)
         }
     }
 }

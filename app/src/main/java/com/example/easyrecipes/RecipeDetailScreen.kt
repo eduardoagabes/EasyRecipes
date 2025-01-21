@@ -21,9 +21,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
+import com.example.easyrecipes.designsystem.components.ERHtmlText
 import retrofit2.Call
 import retrofit2.Response
 
@@ -101,10 +101,8 @@ private fun RecipeDetailContent(recipe: RecipeDto) {
             model = recipe.image,
             contentDescription = "${recipe.title} image"
         )
-        Text(
-            modifier = Modifier.padding(16.dp),
+        ERHtmlText(
             text = recipe.summary,
-            fontSize = 16.sp
         )
     }
 }
