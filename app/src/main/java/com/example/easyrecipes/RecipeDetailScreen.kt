@@ -53,7 +53,6 @@ fun RecipeDetailScreen(recipeId: String, navHostController: NavHostController) {
             ) {
                 Log.d("MainActivity", "Network Error :: ${t.message}")
             }
-
         }
     )
 
@@ -85,7 +84,6 @@ fun RecipeDetailScreen(recipeId: String, navHostController: NavHostController) {
             RecipeDetailContent(it)
         }
     }
-
 }
 
 @Composable
@@ -106,4 +104,3 @@ private fun RecipeDetailContent(recipe: RecipeDto) {
         )
     }
 }
-

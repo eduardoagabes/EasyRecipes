@@ -18,12 +18,12 @@ fun EasyRecipesApp() {
             MainScreen(navController)
         }
         composable(
-            route = "recipeDetail" + "/{itemId}",
+            route = "recipe_detail" + "/{itemId}",
             arguments = listOf(navArgument("itemId") {
                 type = NavType.StringType
             })
-        ) { backStrackEntry ->
-            val recipeId = requireNotNull(backStrackEntry.arguments?.getString("itemId"))
+        ) { backStackEntry ->
+            val recipeId = requireNotNull(backStackEntry.arguments?.getString("itemId"))
             RecipeDetailScreen(recipeId, navController)
         }
         composable(
